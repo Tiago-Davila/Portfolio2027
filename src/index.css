@@ -1,0 +1,119 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-display: 'Doto', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Two colours only: black screen, chalk-white type. */
+  --color-void: #0a0a0a;
+  --color-chalk: #ebe8e1;
+  --color-smoke: #161616;
+  --color-muted: rgb(235 232 225 / 0.45);
+  --color-soft: rgb(235 232 225 / 0.62);
+  --color-line: rgb(235 232 225 / 0.16);
+
+  --text-caption: 0.625rem;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: 0.04em;
+  --text-body-s: 0.75rem;
+  --text-body-s--line-height: 1.5;
+  --text-body-s--letter-spacing: 0;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-void);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  /* CRT scanlines + faint vignette over everything. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.18) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at center, transparent 60%, rgb(0 0 0 / 0.45) 100%);
+  }
+
+  ::selection {
+    background: var(--color-chalk);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    outline: 1px dashed var(--color-chalk);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Caption: tiny uppercase label used everywhere */
+  .caption {
+    font-size: var(--text-caption);
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Dot-matrix display type */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+  }
+
+  /* Inverted block, like a terminal selection: used for *highlighted* words */
+  .inverse {
+    display: inline-block;
+    line-height: 0.98;
+    margin-top: 0.16em;
+    padding: 0 0.06em 0.14em;
+    background: var(--color-chalk);
+    color: var(--color-void);
+  }
+
+  /* Blinking block cursor */
+  .caret::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 0.9em;
+    margin-left: 0.12em;
+    vertical-align: -0.08em;
+    background: currentColor;
+    animation: blink 1.1s steps(1) infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret::after {
+    animation: none;
+  }
+}
