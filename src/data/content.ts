@@ -16,42 +16,92 @@ export const links = {
 }
 
 export const hero = {
-  eyebrow: 'Manifiesto',
   title: ['Hola, soy *Tiago.*', 'Diseño y desarrollo', 'productos web que', 'funcionan de punta', 'a punta.'],
 }
 
-export const projects = [
+/**
+ * One "shot" per scroll step. `desktop` fills the big browser frame and
+ * `mobile` the phone next to it (same moment of the site, both sizes).
+ * Drop the captures in /public/projects/ and reference them here; a shot
+ * without an image shows an ASCII placeholder.
+ */
+export type Shot = { desktop?: string; mobile?: string }
+
+export type Project = {
+  id: string
+  name: string
+  /** 'mobile' = app without a desktop version: the phone takes centre stage. */
+  device: 'web' | 'mobile'
+  url?: string
+  domain?: string
+  tags: readonly string[]
+  description: string
+  rows: readonly (readonly [string, string])[]
+  shots: readonly Shot[]
+}
+
+export const projects: readonly Project[] = [
   {
     id: 'provex',
     name: 'Provex',
+    device: 'web',
     url: 'https://provexx.vercel.app/',
     domain: 'provexx.vercel.app',
     tags: ['Sitio corporativo', 'Servicios'],
     description:
       'Página institucional con foco en servicios, preguntas frecuentes y una navegación clara para usuarios nuevos.',
-    image: '/projects/provex.jpg',
     rows: [
       ['Tipo', 'Sitio corporativo'],
       ['Foco', 'Servicios y FAQ'],
       ['Estado', 'Online'],
     ],
+    // TODO: agregar más capturas (desktop + mobile) de Provex
+    shots: [{ desktop: '/projects/provex.jpg' }, {}, {}],
   },
   {
     id: 'politon',
     name: 'Politón',
+    device: 'web',
     url: 'https://politon.ipm.edu.ar/',
     domain: 'politon.ipm.edu.ar',
     tags: ['Hackathon', 'Landing page'],
     description:
       'Landing page para la hackathon de mi colegio, con links a formulario e información del evento.',
-    image: null,
     rows: [
       ['Tipo', 'Landing page'],
       ['Evento', 'Hackathon IPM'],
       ['Estado', 'Online'],
     ],
+    // TODO: capturas de Politón
+    shots: [{}, {}],
   },
-] as const
+  {
+    // TODO: datos reales del proyecto 03
+    id: 'proyecto-03',
+    name: 'Proyecto 03',
+    device: 'web',
+    tags: ['Aplicación web'],
+    description: 'Descripción pendiente del tercer proyecto.',
+    rows: [
+      ['Tipo', 'Aplicación web'],
+      ['Estado', 'En desarrollo'],
+    ],
+    shots: [{}, {}],
+  },
+  {
+    // TODO: datos reales del proyecto mobile
+    id: 'app-movil',
+    name: 'App móvil',
+    device: 'mobile',
+    tags: ['Mobile', 'App'],
+    description: 'Descripción pendiente de la aplicación mobile.',
+    rows: [
+      ['Tipo', 'App mobile'],
+      ['Estado', 'En desarrollo'],
+    ],
+    shots: [{}, {}, {}],
+  },
+]
 
 export const about = {
   eyebrow: 'Sobre mí',

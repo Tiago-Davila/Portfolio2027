@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { motion } from 'motion/react';
 import type { HTMLMotionProps } from 'motion/react';
+import { sfx } from '@/lib/sfx';
 
 const FADE_FLOOR = 0.16;
 const FADE_PEAK = 0.62;
@@ -260,7 +261,10 @@ export default function DecryptedText({
 
   const ensureTicker = () => {
     if (timerRef.current) return;
-    timerRef.current = setInterval(() => engineRef.current?.tick(), step);
+    timerRef.current = setInterval(() => {
+      engineRef.current?.tick();
+      sfx.glyph();
+    }, step);
   };
 
   const stopRun = () => {

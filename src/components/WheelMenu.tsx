@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import OptionWheel from '@/components/OptionWheel'
-import { sections } from '@/data/content'
+import { menuEntries } from '@/lib/nav'
+import { sfx } from '@/lib/sfx'
 import { cn } from '@/lib/utils'
 
 const EASE = [0.16, 1, 0.3, 1] as const
-const pad = (n: number) => String(n).padStart(2, '0')
-const ITEMS = sections.map((s, i) => `${pad(i)} ${s.label}`)
+const ITEMS = menuEntries.map((e) => e.label)
 
 /** Dial-shaped toggle: a ticked ring that turns on hover and when open. */
 export function WheelButton({ open, onClick }: { open: boolean; onClick: () => void }) {
@@ -117,8 +117,14 @@ function WheelPanel({
         <OptionWheel
           items={ITEMS}
           defaultSelected={active}
-          onChange={setHighlight}
-          onSelect={(i) => onSelect(i)}
+          onChange={(i) => {
+            setHighlight(i)
+            sfx.tick()
+          }}
+          onSelect={(i) => {
+            sfx.confirm()
+            onSelect(i)
+          }}
           ariaLabel="Secciones"
           textColor="rgb(235 232 225 / 0.55)"
           activeColor="#ebe8e1"
@@ -135,7 +141,7 @@ function WheelPanel({
       <p className="caption mt-8 flex flex-wrap justify-center gap-x-4 gap-y-1 text-muted">
         <span>[scroll / arrastrar] elegir</span>
         <span>
-          [click / enter] abrir <span className="text-chalk">{ITEMS[highlight]}</span>
+          [click / enter] abrir <span className="text-chalk">{ITEMS[highlight].replace(/^[\s >]+/, '')}</span>
         </span>
         <span>[esc] cerrar</span>
       </p>
